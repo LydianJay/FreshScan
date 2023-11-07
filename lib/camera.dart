@@ -50,9 +50,8 @@ class _CameraPanelState extends State<CameraPanel> {
     double scrHeight = MediaQuery.of(context).size.height;
     const ButtonStyle bStyle = ButtonStyle(
       iconColor:
-          MaterialStatePropertyAll<Color>(Color.fromARGB(255, 230, 195, 240)),
-      backgroundColor:
           MaterialStatePropertyAll<Color>(Color.fromARGB(255, 200, 79, 204)),
+      backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
     );
 
     return Scaffold(
@@ -64,7 +63,6 @@ class _CameraPanelState extends State<CameraPanel> {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(),
                   color: const Color.fromARGB(255, 230, 195, 240)),
               child: const Text(
                 'FreshSCAN',
@@ -108,17 +106,21 @@ class _CameraPanelState extends State<CameraPanel> {
                                             )));
                               });
                             },
-                            icon: const Icon(Icons.camera_sharp),
+                            icon: const Icon(
+                              Icons.camera_sharp,
+                              size: 65,
+                            ),
                             label: Container(
                                 padding: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(4),
-                                    color: const Color.fromARGB(
-                                        255, 230, 195, 240)),
+                                    color: Colors.white),
                                 child: const Text(
                                   'Take Picture',
                                   style: TextStyle(
-                                      fontFamily: 'Arial',
+                                      fontFamily: 'Calibre',
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
                                       color: Color.fromARGB(255, 0, 0, 0)),
                                 )),
                           ),

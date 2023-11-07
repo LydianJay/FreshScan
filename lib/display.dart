@@ -14,45 +14,18 @@ class Display extends StatefulWidget {
 
 class _DisplayState extends State<Display> {
   final Predictor predictor = Predictor();
-  late Widget resultWidget;
-
+  late String resString;
+  late Color resColor;
   @override
   void initState() {
     super.initState();
 
     if (widget.result >= 0.5) {
-      resultWidget = Container(
-        padding: const EdgeInsets.all(25),
-        margin: const EdgeInsets.all(15),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(25)),
-          color: Colors.redAccent,
-        ),
-        child: const Text(
-          'Classified as: ',
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, fontFamily: "Arial"),
-        ),
-      );
+      resColor = const Color.fromARGB(255, 255, 0, 0);
+      resString = 'NOT FRESH';
     } else {
-      resultWidget = Container(
-        padding: const EdgeInsets.all(25),
-        margin: const EdgeInsets.all(15),
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(25)),
-            gradient: LinearGradient(colors: [
-              Colors.redAccent,
-              Colors.red,
-            ], stops: [
-              0.2,
-              0.7
-            ])),
-        child: const Text(
-          'FRESH',
-          style: TextStyle(
-              fontSize: 18, fontWeight: FontWeight.bold, fontFamily: "Arial"),
-        ),
-      );
+      resColor = const Color.fromARGB(255, 0, 255, 0);
+      resString = 'FRESH';
     }
   }
 
@@ -60,29 +33,59 @@ class _DisplayState extends State<Display> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 200, 79, 204),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         title: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: const Color.fromARGB(255, 230, 195, 240)),
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: const Text(
-              'Image Result',
+              'Result',
               style: TextStyle(
-                  fontFamily: 'Arial', color: Color.fromARGB(255, 0, 0, 0)),
+                  fontSize: 24,
+                  fontFamily: 'Calibre',
+                  color: Color.fromARGB(255, 0, 0, 0)),
             )),
-        centerTitle: true,
+        centerTitle: false,
       ),
       body: ListView(
         children: [
           Container(
-            color: const Color.fromARGB(255, 200, 79, 204),
+            color: Colors.white54,
             child: Column(
               children: [
                 Container(
+                  padding: const EdgeInsets.fromLTRB(20, 40, 20, 35),
                   child: Image.file(File(widget.imgPath)),
                 ),
-                resultWidget,
+                const Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                      child: Text(
+                        "Classified as: ",
+                        style: TextStyle(
+                          fontSize: 36,
+                          fontFamily: "Arial",
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    resString,
+                    style: TextStyle(
+                      fontSize: 58,
+                      color: resColor,
+                      fontFamily: "Arial",
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
               ],
             ),
           )

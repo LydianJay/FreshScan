@@ -31,9 +31,17 @@ class _MyAppState extends State<MyApp> {
 class InitPage extends StatelessWidget {
   final List<CameraDescription> cameras;
   final Predictor predictor = Predictor();
-  late String imagePath;
   InitPage({Key? key, required this.cameras}) : super(key: key);
   double res = 0;
+  late String imagePath;
+
+  final List<Color> myColors = const [
+    Color.fromARGB(255, 238, 238, 240),
+    Color.fromARGB(255, 239, 239, 245),
+    Color.fromARGB(255, 92, 87, 138),
+    Color.fromARGB(255, 0, 0, 1),
+    Color.fromARGB(255, 52, 55, 58)
+  ];
 
   Future<void> pickImage() async {
     final picker = ImagePicker();
@@ -50,7 +58,7 @@ class InitPage extends StatelessWidget {
 
     return Scaffold(
         body: Container(
-      color: Color.fromARGB(255, 230, 195, 240),
+      color: myColors[1],
       child: Column(
         children: [
           Center(
@@ -58,98 +66,120 @@ class InitPage extends StatelessWidget {
               width: scrWidth,
               margin: const EdgeInsets.fromLTRB(0, 30, 0, 20),
               padding: const EdgeInsets.all(10),
-              //margin: EdgeInsets.all(15),
               height: scrHeight * 0.50,
               foregroundDecoration: const BoxDecoration(
                   image: DecorationImage(
                       image: AssetImage("assets/images/splash_screen.png"),
-                      fit: BoxFit.fill),
+                      fit: BoxFit.fitWidth),
                   borderRadius: BorderRadius.all(Radius.circular(45.5))),
             ),
           ),
           Column(
             children: [
               Container(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 30),
                 margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                child: Column(
                   children: [
-                    ElevatedButton.icon(
-                        style: const ButtonStyle(
-                          iconColor: MaterialStatePropertyAll<Color>(
-                              Color.fromARGB(255, 230, 195, 240)),
-                          backgroundColor: MaterialStatePropertyAll<Color>(
-                              Color.fromARGB(255, 88, 32, 100)),
-                        ),
-                        onPressed: () {
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        shadowColor:
+                            MaterialStatePropertyAll<Color>(myColors[3]),
+                        fixedSize: MaterialStatePropertyAll<Size>(
+                            Size((scrWidth * 0.8), 130.0)),
+                        iconColor: MaterialStatePropertyAll<Color>(myColors[2]),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(myColors[1]),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(35.0),
+                                    side:
+                                        const BorderSide(color: Colors.black))),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    CameraPanel(cameras: cameras)));
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                            child: const Icon(
+                              Icons.camera_alt_sharp,
+                              size: 75,
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(color: myColors[1]),
+                            child: Text('Scan',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily: 'Helvetica',
+                                    fontWeight: FontWeight.bold,
+                                    backgroundColor: myColors[1],
+                                    color: myColors[3])),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        shadowColor:
+                            MaterialStatePropertyAll<Color>(myColors[3]),
+                        fixedSize: MaterialStatePropertyAll<Size>(
+                            Size((scrWidth * 0.8), 130.0)),
+                        iconColor: MaterialStatePropertyAll<Color>(myColors[2]),
+                        backgroundColor:
+                            MaterialStatePropertyAll<Color>(myColors[1]),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(35.0),
+                                    side:
+                                        const BorderSide(color: Colors.black))),
+                      ),
+                      onPressed: () {
+                        pickImage().then((value) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      CameraPanel(cameras: cameras)));
-                        },
-                        icon: const Icon(Icons.camera_alt_sharp),
-                        label: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(),
-                              color: const Color.fromARGB(255, 230, 195, 240)),
-                          child: const Text('Camera',
-                              style: TextStyle(
-                                  fontFamily: 'Helvetica',
-                                  color: Color.fromARGB(255, 27, 25, 26))),
-                        )),
-                    ElevatedButton.icon(
-                        style: const ButtonStyle(
-                          iconColor: MaterialStatePropertyAll<Color>(
-                              Color.fromARGB(255, 230, 195, 240)),
-                          backgroundColor: MaterialStatePropertyAll<Color>(
-                              Color.fromARGB(255, 88, 32, 100)),
-                        ),
-                        onPressed: () {
-                          pickImage().then((value) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Display(
-                                          imgPath: imagePath,
-                                          result: res,
-                                        )));
-                          });
-                        },
-                        icon: const Icon(Icons.image_rounded),
-                        label: Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(),
-                              color: const Color.fromARGB(255, 230, 195, 240)),
-                          child: const Text('Galery',
-                              style: TextStyle(
-                                  fontFamily: 'Helvetica',
-                                  color: Color.fromARGB(255, 27, 25, 26))),
-                        )),
+                                  builder: (context) => Display(
+                                        imgPath: imagePath,
+                                        result: res,
+                                      )));
+                        });
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                            child: const Icon(
+                              Icons.image,
+                              size: 75,
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(color: myColors[1]),
+                            child: Text('Gallery',
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    fontFamily: 'Helvetica',
+                                    fontWeight: FontWeight.bold,
+                                    backgroundColor: myColors[1],
+                                    color: myColors[3])),
+                          ),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.all(10),
-                child: const Text(
-                  "About Us: ",
-                  style: TextStyle(
-                      fontSize: 24,
-                      fontFamily: "Arial",
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              const Text(
-                "We redefine fish freshness using AI and image recognition tech. Empowering consumers to choose the freshest fish. How It Works: AI analyzes fish eyes for a precise freshness score.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                    fontSize: 16,
-                    fontFamily: "Arial",
-                    fontWeight: FontWeight.bold),
               ),
             ],
           ),
