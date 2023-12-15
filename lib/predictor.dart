@@ -27,7 +27,7 @@ class Predictor {
 
     if (capturedImage != null) {
       final scaledImage =
-          img.copyResize(capturedImage, width: 224, height: 224);
+          img.copyResize(capturedImage, width: 256, height: 256);
 
       final imageMatrix = List.generate(
         scaledImage.height,
@@ -42,7 +42,7 @@ class Predictor {
 
       final input = [imageMatrix];
 
-      final out = [List<double>.filled(1, 0)];
+      final out = [List<double>.filled(2, 0)];
       interpreter!.run(input, out);
       return out.first.first;
     }

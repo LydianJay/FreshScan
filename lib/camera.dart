@@ -16,6 +16,13 @@ class _CameraPanelState extends State<CameraPanel> {
   final Predictor predictor = Predictor();
   late String imagePath;
   double result = 0;
+  final List<Color> myColors = const [
+    Color.fromARGB(255, 238, 238, 240),
+    Color.fromARGB(255, 239, 239, 245),
+    Color.fromARGB(255, 92, 87, 138),
+    Color.fromARGB(255, 0, 0, 1),
+    Color.fromARGB(255, 52, 55, 58)
+  ];
   @override
   void initState() {
     super.initState();
@@ -47,11 +54,6 @@ class _CameraPanelState extends State<CameraPanel> {
   Widget build(BuildContext context) {
     double scrWidth = MediaQuery.of(context).size.width;
     double scrHeight = MediaQuery.of(context).size.height;
-    const ButtonStyle bStyle = ButtonStyle(
-      iconColor:
-          MaterialStatePropertyAll<Color>(Color.fromARGB(255, 200, 79, 204)),
-      backgroundColor: MaterialStatePropertyAll<Color>(Colors.white),
-    );
 
     return Scaffold(
       appBar: AppBar(
@@ -86,14 +88,31 @@ class _CameraPanelState extends State<CameraPanel> {
                   ),
                 ),
                 Positioned(
+                  bottom: 35,
+                  left: 62,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          ElevatedButton.icon(
-                            style: bStyle,
+                          ElevatedButton(
+                            style: ButtonStyle(
+                              shadowColor:
+                                  MaterialStatePropertyAll<Color>(myColors[3]),
+                              fixedSize: MaterialStatePropertyAll<Size>(
+                                  Size((scrWidth * 0.65), 90.0)),
+                              iconColor:
+                                  MaterialStatePropertyAll<Color>(myColors[2]),
+                              backgroundColor:
+                                  MaterialStatePropertyAll<Color>(myColors[1]),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(35.0),
+                                      side: const BorderSide(
+                                          color: Colors.black))),
+                            ),
                             onPressed: () {
                               captureImage().then((value) {
                                 Navigator.push(
@@ -105,23 +124,28 @@ class _CameraPanelState extends State<CameraPanel> {
                                             )));
                               });
                             },
-                            icon: const Icon(
-                              Icons.camera_sharp,
-                              size: 65,
+                            child: Column(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
+                                  child: const Icon(
+                                    Icons.camera_sharp,
+                                    size: 40,
+                                  ),
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(color: myColors[1]),
+                                  child: Text('Take Picture',
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontFamily: 'Arial',
+                                          fontWeight: FontWeight.bold,
+                                          backgroundColor: myColors[1],
+                                          color: myColors[3])),
+                                ),
+                              ],
                             ),
-                            label: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: Colors.white),
-                                child: const Text(
-                                  'Take Picture',
-                                  style: TextStyle(
-                                      fontFamily: 'Calibre',
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 0, 0, 0)),
-                                )),
                           ),
                         ],
                       ),
