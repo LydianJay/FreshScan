@@ -16,22 +16,22 @@ class _DisplayState extends State<Display> {
   final Predictor predictor = Predictor();
   late String resString;
   late Color resColor;
-  late double confidence;
+  late double freshness;
   @override
   void initState() {
     super.initState();
-    confidence = 0;
+    freshness = 0;
 
     if (widget.result > 0.5) {
       resColor = const Color.fromARGB(255, 255, 0, 0);
       resString = 'NOT FRESH';
-      confidence = widget.result * 100.0;
     } else {
       resColor = const Color.fromARGB(255, 0, 255, 0);
-      confidence = widget.result * 100.0;
+
       resString = 'FRESH';
     }
-    debugPrint('confidence: $confidence');
+    freshness = (1.0 - widget.result) * 100.0;
+    debugPrint('confidence: $freshness');
     debugPrint('prediction: ${widget.result}');
   }
 
@@ -87,6 +87,19 @@ class _DisplayState extends State<Display> {
                     style: TextStyle(
                       fontSize: 58,
                       color: resColor,
+                      fontFamily: "Arial",
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    'Freshness Percentage: ${freshness.toStringAsFixed(3)}%',
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 26,
+                      color: Colors.black,
                       fontFamily: "Arial",
                       fontWeight: FontWeight.bold,
                     ),

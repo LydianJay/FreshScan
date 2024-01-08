@@ -42,7 +42,7 @@ class Predictor {
 
       final input = [imageMatrix];
 
-      final out = [List<double>.filled(2, 0)];
+      final out = [List<double>.filled(1, 0)];
       interpreter!.run(input, out);
       return out.first.first;
     }
